@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:first/widgets/authentication.dart';
+import 'package:first/widgets/database.dart';
 import 'package:flutter/material.dart';
 // Import the generated file
 import 'firebase_options.dart';
@@ -23,7 +25,16 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         primaryColor: Colors.yellow,
       ),
-      home: const AuthenticationWidget(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const DatabaseOptions();
+          } else {
+            return const AuthenticationWidget();
+          }
+        },
+      ),
     );
   }
 }
